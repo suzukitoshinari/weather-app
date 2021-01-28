@@ -102,7 +102,7 @@ const Weather = () => {
   const [value, setValue] = useState("");
   const [temp, settemp] = useState("");
   const [typecity, settypecity] = useState("");
-  const [city, setcity] = useState("Delhi");
+  const [city, setcity] = useState("");
   const [img, setimg] = useState("");
   const [disc, setdisc] = useState("");
 
@@ -112,7 +112,7 @@ const Weather = () => {
   };
   useEffect(() => {
     axios(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ja&appid={59fc454c304362df4fbe9fcc08090ec3}`
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ja&appid={}`
     ).then((res) => {
       setValue(res.data);
       settemp(res.data.main);
