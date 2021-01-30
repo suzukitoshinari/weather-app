@@ -53,7 +53,6 @@ const Weather = () => {
     }
 
     useEffect(() => {
-        // const key = 'be690936e66de4f05bda2ccf9f534c2c';
         axios(`http://api.openweathermap.org/data/2.5/weather?q=${country}&lang=ja&appid=`
         ).then((res) => {
             setWeather(res.data.weather.description);
@@ -69,7 +68,7 @@ const Weather = () => {
             <Paper className={classes.paper}>
                 <h1 className={classes.head}>Weather Search</h1>
                 <form onSubmit={searchCountry}>
-                    <TextField value={search} id='standard-basic' label='国や地名を入力を検索' onChange={inputSearch} />
+                    <TextField value={search} id='standard-basic' label='地名を入力を検索' onChange={inputSearch} />
                     <button type='submit' className={classes.btn}>
                         <SearchIcon />
                     </button>
