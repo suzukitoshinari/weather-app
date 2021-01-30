@@ -36,9 +36,8 @@ const useStyles = makeStyles({
 });
 
 const Weather = () => {
-    const [value, setValue] = useState('');
     const [search, setSearch] = useState('');
-    const [country, setCountry] = useState('');
+    const [country, setCountry] = useState('Tokyo');
     const [date, setDate] = useState('');
     const [weather, setWeather] = useState('');
     const [img, setImg] = useState('')
@@ -54,12 +53,13 @@ const Weather = () => {
     }
 
     useEffect(() => {
-        axios(`http://api.openweathermap.org/data/2.5/weather?q=${country}&lang=ja&appid=''`).then((res) => {
-            setValue(res.data);
-            setWeather(res.data.weather[0].description);
+        // const key = 'be690936e66de4f05bda2ccf9f534c2c';
+        axios(`http://api.openweathermap.org/data/2.5/weather?q=${country}&lang=ja&appid=`
+        ).then((res) => {
+            setWeather(res.data.weather.description);
             setTemperature(res.data.main);
             setImg(`http://openweathermap.org/img/wn/${res.data.weather[0].icon}.png`);
-            setDate(res.data.daily[0].dt);
+            setDate(`${res.data.dt}`);
         });
     }, [country]);
 
@@ -75,12 +75,19 @@ const Weather = () => {
                     </button>
                 </form>
                 <div className={classes.container}>
-                    <p>{value}</p>
                     <p>{country}</p>
                     <p>{date}</p>
-                    <img src={img} alt='' />
+                    <img src={img} alt='weather icon' />
                     <p>{weather}</p>
-                    <p>{temperature}</p>
+                    <p>
+                        Min <br />
+                        {`${Math.floor(temperature.temp_min - 273.15)}° C`}
+                    </p>
+                    <h6 className="fontcss">{`${Math.floor(temperature.temp - 273.15)}° C`}</h6>
+                    <p>
+                        Min <br />
+                        {`${Math.floor(temperature.temp_max - 273.15)}° C`}
+                    </p>
                 </div>
             </Paper>
         </div>
@@ -88,4 +95,3 @@ const Weather = () => {
 }
 
 export default Weather
-
