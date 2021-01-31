@@ -32,13 +32,22 @@ const useStyles = makeStyles({
         height: 451,
         marginTop: 20,
         backgroundColor: 'skyblue'
+    },
+    temp: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: 200,
+    },
+    temp_contents: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: 10
     }
 });
 
 const Weather = () => {
     const [search, setSearch] = useState('');
     const [country, setCountry] = useState('Tokyo');
-    const [date, setDate] = useState('');
     const [weather, setWeather] = useState('');
     const [img, setImg] = useState('')
     const [temperature, setTemperature] = useState('');
@@ -52,13 +61,15 @@ const Weather = () => {
         setCountry(search);
     }
 
+    const d = new Date();
+    const nowTime = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`.replace(/\n|\r/g, '');
+
     useEffect(() => {
-        axios(`http://api.openweathermap.org/data/2.5/weather?q=${country}&lang=ja&appid=`
+        axios(`http://api.openweathermap.org/data/2.5/weather?q=${country}&lang=ja&units=metric&appid=`
         ).then((res) => {
             setWeather(res.data.weather.description);
             setTemperature(res.data.main);
             setImg(`http://openweathermap.org/img/wn/${res.data.weather[0].icon}.png`);
-            setDate(`${res.data.dt}`);
         });
     }, [country]);
 
@@ -74,19 +85,24 @@ const Weather = () => {
                     </button>
                 </form>
                 <div className={classes.container}>
+                    <p>{nowTime}</p>
                     <p>{country}</p>
-                    <p>{date}</p>
-                    <img src={img} alt='weather icon' />
+                    <img src={img} alt='weather icon' width='140' />
                     <p>{weather}</p>
-                    <p>
-                        Min <br />
-                        {`${Math.floor(temperature.temp_min - 273.15)}° C`}
-                    </p>
-                    <h6 className="fontcss">{`${Math.floor(temperature.temp - 273.15)}° C`}</h6>
-                    <p>
-                        Min <br />
-                        {`${Math.floor(temperature.temp_max - 273.15)}° C`}
-                    </p>
+                    <div className={classes.temp}>
+                        <p className={classes.temp_contents}>
+                            最低気温 <br />
+                            {`${Math.floor(temperature.temp_min)}° C`}
+                        </p>
+                        <p className={classes.temp_contents}>
+                            平均気温 <br />
+                            {`${Math.floor(temperature.temp)}° C`}
+                        </p>
+                        <p className={classes.temp_contents}>
+                            最高気温 <br />
+                            {`${Math.floor(temperature.temp_max)}° C`}
+                        </p>
+                    </div>
                 </div>
             </Paper>
         </div>
